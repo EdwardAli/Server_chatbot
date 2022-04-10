@@ -1,0 +1,25 @@
+swagger: "2.0"
+info:
+  title: "ChatBot system api"
+  version: "1.0.0"
+  description: "server to handle chatbot online shoppping"
+  contact: 
+    email: "bed-com-13-17@gmail.com"
+  liscence:
+    name: Apache 2.0
+    url: "http://apache.org/"
+  servers:
+    -url: "http://localhost:3002"
+    description: The server runs on port 3002 locally
+
+schemes: [http,https]
+
+paths:
+  /shop/register:
+    post:
+      summary: creater shop in the database
+      description: post shop with shopName,etc and password
+  /shop/login:
+    post:
+      summary: for a shop to login
+      description: post shopName and password

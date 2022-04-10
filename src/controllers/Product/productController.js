@@ -1,0 +1,124 @@
+const express = require("express");
+const ProductController = express.Router();
+const nodeCron=require('node-cron');
+const {Shops,Product:Products} = require("../../models");
+const { validateToken } = require("../../../middlewares/AuthMiddleware");
+
+
+ProductController.get("/product/All", async (req, res,next) => {
+try {
+  
+const products = await Products.findAll();
+  res.status(200).json(products);
+
+} catch (error) {
+  next(error);
+}
+
+});
+
+ ProductController.get("/product/byShop/:ShopId", async (req, res,next) => {
+try {
+ 
+  const id = req.params.ShopId;
+  const productBySupplier = await Products.findAll({ where: {id: id}});
+  res.status(200).json(productBySupplier);
+} catch (error) {
+  next(error);
+}
+ });
+
+
+ ProductController.get("/product/byId/:id", async (req, res,next) => {
+   try {
+    const id = req.params.id;
+    const product=await Products.findOne({where:{id:id}});
+    if(product){
+     res.status(200).json(product);
+    }else{
+      res.status(404).json("Not found");
+    }
+   } catch (error) {
+     next(error);
+   }
+  
+  });
+
+
+ProductController.post("/product/create/:id",validateToken, async (req, res,next) => {
+
+  //variables
+ 
+  try {
+    const {Name,Quantity,Description,Price,Shop}=req.body;
+    const id=req.params.id;
+    const name=Name.toLowerCase();
+    const duplicateProduct=await Products.findOne({where:{Name:name,Quantity:Quantity,Shop:Shop,ShopId:id}});
+    if(duplicateProduct){return res.status(409).json("already registered")};
+    try {
+        const product=req.body;
+        product.Name=name;
+        product.ShopId=id;
+       await Products.create(product)
+            res.status(200).json(product);
+            console.log("successful");
+    } catch (error) {
+        
+    }
+  
+  } catch (error) {
+      next(error);
+  }
+  
+  
+});
+
+
+ ProductController.delete("/product/delete/:id", async (req, res,next) => {
+   try {
+    const productId = req.params.id;
+    await Products.destroy({
+      where: {
+        id:productId,
+      },
+    });
+    res.status(200).json("DELETED SUCCESSFULLY");
+   } catch (error) {
+     next(error);
+   }
+ 
+});
+
+ProductController.put("/product/update/:id", async (req, res,next) => {
+ 
+try {
+  const id = req.params.id;
+  const available=await Products.findOne({where:{id:id}})
+  if(available){
+    await Products.update(req.body,{
+        where: {
+          id:id,
+        },
+      });
+      res.status(200).json("updated succesfully");
+  }else{
+    return res.status(400).json("NO such product available");
+  }
+  
+} catch (error) {
+next(error);
+}
+
+});
+
+  // nodeCron.schedule('* * * * *', function() {
+  //   try {
+   
+  //   console.log('running a task every SECOND');
+  // } catch (error) {
+  //   res.send(500).json({error:error.message});
+  // }  
+  // });
+
+
+module.exports = ProductController;
