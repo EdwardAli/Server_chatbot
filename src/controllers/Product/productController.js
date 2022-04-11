@@ -21,7 +21,7 @@ const products = await Products.findAll();
 try {
  
   const id = req.params.ShopId;
-  const productBySupplier = await Products.findAll({ where: {id: id}});
+  const productBySupplier = await Products.findAll({ where: {ShopId: id}});
   res.status(200).json(productBySupplier);
 } catch (error) {
   next(error);
