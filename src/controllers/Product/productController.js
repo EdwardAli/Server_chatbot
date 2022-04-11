@@ -29,9 +29,9 @@ try {
  });
 
 
- ProductController.get("/product/byId/:id", async (req, res,next) => {
+ ProductController.get("/product/byId/:productiId", async (req, res,next) => {
    try {
-    const id = req.params.id;
+    const id = req.params.productId;
     const product=await Products.findOne({where:{id:id}});
     if(product){
      res.status(200).json(product);
@@ -45,13 +45,13 @@ try {
   });
 
 
-ProductController.post("/product/create/:id",validateToken, async (req, res,next) => {
+ProductController.post("/product/create/:shopId",validateToken, async (req, res,next) => {
 
   //variables
  
   try {
     const {Name,Quantity,Description,Price,Shop}=req.body;
-    const id=req.params.id;
+    const id=req.params.shopId;
     const name=Name.toLowerCase();
     const duplicateProduct=await Products.findOne({where:{Name:name,Quantity:Quantity,Shop:Shop,ShopId:id}});
     if(duplicateProduct){return res.status(409).json("already registered")};
@@ -74,9 +74,9 @@ ProductController.post("/product/create/:id",validateToken, async (req, res,next
 });
 
 
- ProductController.delete("/product/delete/:id", async (req, res,next) => {
+ ProductController.delete("/product/delete/:productId", async (req, res,next) => {
    try {
-    const productId = req.params.id;
+    const productId = req.params.productId;
     await Products.destroy({
       where: {
         id:productId,
@@ -89,10 +89,10 @@ ProductController.post("/product/create/:id",validateToken, async (req, res,next
  
 });
 
-ProductController.put("/product/update/:id", async (req, res,next) => {
+ProductController.put("/product/update/:productId", async (req, res,next) => {
  
 try {
-  const id = req.params.id;
+  const id = req.params.productId;
   const available=await Products.findOne({where:{id:id}})
   if(available){
     await Products.update(req.body,{
@@ -111,14 +111,6 @@ next(error);
 
 });
 
-  // nodeCron.schedule('* * * * *', function() {
-  //   try {
-   
-  //   console.log('running a task every SECOND');
-  // } catch (error) {
-  //   res.send(500).json({error:error.message});
-  // }  
-  // });
 
 
 module.exports = ProductController;

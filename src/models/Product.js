@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull:false,
       },
       Price:{
-        type:DataTypes.STRING,
+        type:DataTypes.DECIMAL,
         allowNull:false,
       },
       Shop:{
