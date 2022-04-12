@@ -58,6 +58,7 @@ ProductController.post("/product/create/:shopId",validateToken, async (req, res,
     const duplicateProduct=await Products.findOne({where:{Name:name,Quantity:Quantity,ShopId:id}});
     if(duplicateProduct){return res.status(409).json("already registered")};
     try {
+      if(shop){
         const product=req.body;
         product.Name=name;
         product.Shop=shop.shopName;
@@ -65,6 +66,10 @@ ProductController.post("/product/create/:shopId",validateToken, async (req, res,
        await Products.create(product)
             res.status(200).json(product);
             console.log("successful");
+      }else{
+        res.status(404).json("Shop not found");
+      }
+       
     } catch (error) {
         
     }
