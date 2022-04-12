@@ -89,7 +89,7 @@ shopController.post("/shop/login", async (req, res,next) => {
   const shop = await Shops.findOne({ where: { shopName:shopName} });
       console.log("found data is")
       console.log(shop)
-  if (!shop) res.status(403).json({ error: "shop Doesn't Exist" });
+  if (!shop) return res.status(403).json({ error: "shop Doesn't Exist" });
 
   bcrypt.compare(password, shop.password).then(async (match) => {
     if (!match) res.json({ error: " Shopname and password does not match" });

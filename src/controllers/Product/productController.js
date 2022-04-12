@@ -53,11 +53,12 @@ ProductController.post("/product/create/:shopId",validateToken, async (req, res,
    
     const {Name,Quantity,Description,Price}=req.body;
     const id=req.params.shopId;
-    const shop=await Shops.findByPk(id);
+    
     const name=Name.toLowerCase();
     const duplicateProduct=await Products.findOne({where:{Name:name,Quantity:Quantity,ShopId:id}});
     if(duplicateProduct){return res.status(409).json("already registered")};
     try {
+      const shop=await Shops.findByPk(id);
       if(shop){
         const product=req.body;
         product.Name=name;
