@@ -85,8 +85,10 @@ shopController.put("/shop/update/:id",validateToken, async (req, res,next) => {
 shopController.post("/shop/login", async (req, res,next) => {
   try {
     const {shopName,password } = req.body;
-  const shop = await Shops.findOne({ where: { shopName: shopName} });
-
+    console.log(req.body)
+  const shop = await Shops.findOne({ where: { shopName:shopName} });
+      console.log("found data is")
+      console.log(shop)
   if (!shop) res.status(403).json({ error: "shop Doesn't Exist" });
 
   bcrypt.compare(password, shop.password).then(async (match) => {
