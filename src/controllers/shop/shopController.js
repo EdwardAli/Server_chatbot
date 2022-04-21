@@ -138,7 +138,7 @@ shopController.get("/shop/All",async (req, res,next) => {
  
   
   });
-  shopController.delete("/shop/delete/:id", validateToken, async (req, res,next) => {
+  shopController.delete("/shop/delete/:id", async (req, res,next) => {
     try {
       const id = req.params.id;
     await Shops.destroy({
