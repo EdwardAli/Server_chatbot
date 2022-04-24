@@ -10,7 +10,7 @@ const { sign } = require("jsonwebtoken");
 
 
 //to get details of shop that ha ogged in now
-shopController.get("/shop/thisShop", validateToken, (req, res,next) => {
+shopController.get("/shop/thisShop", validateToken, async (req, res,next) => {
 
   try {
     res.status(200).json(req.user);  
