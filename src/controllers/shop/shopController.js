@@ -10,7 +10,7 @@ const { sign } = require("jsonwebtoken");
 
 
 //to get details of shop that ha ogged in now
-shopController.get("/shop/thisShop", validateToken, async (req, res,next) => {
+shopController.get("/shop/thisShop", validateToken (req, res,next) => {
 
   try {
     res.status(200).json(req.user);  
@@ -20,7 +20,7 @@ shopController.get("/shop/thisShop", validateToken, async (req, res,next) => {
     
   });
 // to register shop
-shopController.post("/shop/register",validateToken,async (req, res,next) => {
+shopController.post("/shop/register",async (req, res,next) => {
   try {
 
       const { shopName,phoneNumber,email,location,password } = req.body;
