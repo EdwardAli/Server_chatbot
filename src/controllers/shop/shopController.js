@@ -20,7 +20,7 @@ shopController.get("/shop/thisShop", validateToken (req, res,next) => {
     
   });
 // to register shop
-shopController.post("/shop/register",async (req, res,next) => {
+shopController.post("/shop/register",validateToken,async (req, res,next) => {
   try {
 
       const { shopName,phoneNumber,email,location,password } = req.body;
